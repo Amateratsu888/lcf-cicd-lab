@@ -1,11 +1,10 @@
 name: Deploy Pipeline For Terraform LCF
 
 on:
-  push:
-    branches:
-      - deploy-tf-s3
-    paths:
-      - "terraform/**"
+  pull_request:
+    types: [closed]
+  paths:
+    - "terraform/**"
 
 jobs:
   terraform:
