@@ -3,8 +3,8 @@ name: Deploy Pipeline For Terraform LCF
 on:
   pull_request:
     types: [closed]
-  paths:
-    - "terraform/**"
+    paths:
+      - "terraform/**"
 
 jobs:
   terraform:
@@ -28,17 +28,15 @@ jobs:
           aws-region: "eu-west-1"
 
       - name: Initialize Terraform
-        run: |
-          cd terraform
-          terraform init
+        working-directory: terraform
+        run: terraform init
 
       - name: Terraform Plan
         id: plan
-        run: |
-          cd terraform
-          terraform plan -out=tfplan
+        working-directory: terraform
+        run: terraform plan -out=tfplan
+
       - name: Terraform Apply
-        if: github.event.pull_request.merged == true
-        run: |
-          cd terraform
-          terraform apply -auto-approve
+        if: ${{ github.event.pull_request.merged == true }}
+        working-directory: terraform
+        run: terraform apply -auto-approve tfplan
